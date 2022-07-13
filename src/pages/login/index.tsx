@@ -20,11 +20,7 @@ const Login = () => {
 
 
     const dispatch = useAppDispatch()
-    const {register,  handleSubmit, formState: {errors, isValid}} = useForm<FormProps>({
-        defaultValues: {
-            email: "ele@gail.com",
-            password: '112345'
-        },
+    const {register,  handleSubmit, formState: {errors}} = useForm<FormProps>({
         mode: "onChange"
     })
     const onSubmit = async (values: any) => {
@@ -33,7 +29,6 @@ const Login = () => {
         if (!payload) {
             return
         }
-
 
         if ("token" in payload) {
             window.localStorage.setItem("token", payload.token)

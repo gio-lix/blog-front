@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from "./Header.module.scss"
 import Button from "../button";
 import {classNames} from "../../utlis/classes";
@@ -10,7 +10,6 @@ const Header = () => {
     const dispatch = useAppDispatch()
     const isAuth = useAppSelector(selectAuth)
 
-    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const onClickLogout = () => {
         dispatch(logout())

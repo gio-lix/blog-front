@@ -27,7 +27,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {viewsCount, _id, tags, title, user, createdAt, updatedAt, text} = post
+    const {viewsCount, _id, tags,  user, createdAt} = post
     const [more, setMore] = useState<boolean>(false)
 
     const path = location.pathname === "/"
@@ -103,7 +103,6 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
                         </li>
                         <li>
                             <BiMessageSquare size="21px"/>
-                            {/*<span>{commentsCount}</span>*/}
                         </li>
                     </ul>
                 </div>

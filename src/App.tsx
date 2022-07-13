@@ -6,14 +6,13 @@ import AddPost from "./pages/addPost";
 import Login from "./pages/login";
 import Registration from "./pages/registretion";
 import {Routes, Route} from "react-router-dom"
-import {useAppDispatch, useAppSelector} from "./redux/store";
-import {fetchAuthMe, selectAuth} from "./redux/slices/auth";
+import {useAppDispatch} from "./redux/store";
+import {fetchAuthMe} from "./redux/slices/auth";
 
 
 
 function App() {
     const dispatch = useAppDispatch()
-    const isAuth = useAppSelector(selectAuth)
 
     useEffect(() => {
         dispatch(fetchAuthMe())

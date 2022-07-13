@@ -3,7 +3,7 @@ import Sign from "../../components/sign";
 import Button from "../../components/button";
 import s from "../login/Login.module.scss";
 import {useForm} from "react-hook-form";
-import {fetchRegister, fetchUserData, selectAuth} from "../../redux/slices/auth";
+import {fetchRegister, selectAuth} from "../../redux/slices/auth";
 import {Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 
@@ -18,12 +18,7 @@ const Registration = () => {
     const isAuth = useAppSelector(selectAuth)
     const dispatch = useAppDispatch()
 
-    const {register,  handleSubmit, formState: {errors, isValid}} = useForm<FormProps>({
-        defaultValues: {
-            fullName: "rebecca",
-            email: "rebecca@gail.com",
-            password: '112345'
-        },
+    const {register,  handleSubmit, formState: {errors}} = useForm<FormProps>({
         mode: "onChange"
     })
 
