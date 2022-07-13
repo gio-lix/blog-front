@@ -32,7 +32,7 @@ const HomePage = () => {
                 fullName: 'Mollie Andersson',
                 avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
             },
-            text: 'hello there',
+            text: 'hello',
         },
         {
             user: {
