@@ -1,0 +1,61 @@
+@import "src/styles/variables";
+@import "src/styles/mixin";
+
+.home {
+
+  &_article {
+    display: flex;
+    margin-bottom: 30px;
+
+    > p {
+      cursor: pointer;
+      width: 90px;
+      position: relative;
+      text-align: center;
+
+
+      &.choice {
+        &::before {
+          position: absolute;
+          opacity: 1;
+          width: 100% ;
+        }
+      }
+
+      &::before {
+        content: "";
+        left: 0;
+        bottom: -20px;
+
+        height: 4px;
+        background-color: $limeGreen;
+        opacity: 0;
+        @include transition(opacity);
+      }
+    }
+
+    > p:first-child {
+      margin-right: 3px;
+    }
+  }
+
+  &_grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    .cart {
+      grid-column: 1 / 4;
+      height: auto;
+      padding: 3px;
+    }
+    .info {
+      grid-column: 4 / 6;
+      padding: 0 20px;
+      height: auto;
+    }
+    .navLink {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}

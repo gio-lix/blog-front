@@ -1,0 +1,78 @@
+@import "src/styles/variables";
+@import "src/styles/mixin";
+
+.header {
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  //&.open {
+  //  .header__toggle {
+  //    > span:first-child {
+  //      transform: rotate(45deg);
+  //    }
+  //
+  //    > span:nth-child(2) {
+  //      opacity: 0;
+  //    }
+  //
+  //    > span:last-child {
+  //      transform: rotate(-45deg);
+  //    }
+  //  }
+  //}
+
+  //&__toggle {
+  //  cursor: pointer;
+  //  > span {
+  //    display: block;
+  //    width: 26px;
+  //    height: 2px;
+  //    background-color: $darkBlue;
+  //    transform-origin: 6px 1px;
+  //    @include transition(all);
+  //
+  //    &:not(:last-child) {
+  //      margin-bottom: 3px;
+  //    }
+  //  }
+  //}
+}
+
+
+.logo {
+  background-color: black;
+  color: #fff;
+  font-weight: 700;
+  line-height: 35px;
+  text-transform: uppercase;
+  letter-spacing: 0.15px;
+  border-radius: 5px;
+  padding: 0 10px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $limeGreen;
+  }
+}
+
+.buttons {
+  button {
+    margin-left: 10px;
+    height: 35px;
+    border: none;
+    background: $limeGreen;
+    opacity: 0.7;
+    color: $white;
+    font-size: $font-sm;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    @include transition(opacity);
+    &:hover {
+      opacity: 1;
+    }
+  }
+  a {
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,48 @@
+.root {
+  display: flex;
+  //margin-top: 10px;
+  //padding-bottom: 20px;
+  //margin-right: 20px;
+  //margin-left: 17px;
+
+  .img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
+
+
+.form {
+  position: relative;
+  width: 100%;
+  margin-left: 10px;
+
+  > label {
+    position: absolute;
+    left: 6px;
+    font-size: 18px;
+    font-weight: 500;
+    top: -12px;
+    color: #656565;
+    background-color: white;
+  }
+
+  > textarea {
+    padding: 12px 7px 0 7px;
+    font-size: 17px;
+    resize: none;
+    display: block;
+    width: 100%;
+    height: 80px;
+    outline: none;
+  }
+  .button {
+    margin-top: 10px;
+    height: 30px;
+    padding: 0 10px;
+    background-color: greenyellow;
+    border: 0.5px solid darkslategray;
+    cursor: pointer;
+  }
+}
