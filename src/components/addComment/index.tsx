@@ -1,23 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import s from "./AddComent.module.scss"
 import Button from "../button";
+import {FaUserCircle} from "react-icons/fa"
 
-const AddComments = () => {
+interface Props {
+    setCommentText: Function
+    onSendComment: () => void
+    commentText: string
+}
+
+const AddComments = ({setCommentText,commentText, onSendComment}: Props) => {
+
     return (
         <>
             <div className={s.root}>
-                <img
-                    className={s.img}
-                    src="https://mui.com/static/images/avatar/5.jpg"
-                    alt="img"
-                />
+                <FaUserCircle className={s.icon} />
                 <div className={s.form}>
                     <label htmlFor="comment">Comment</label>
                     <textarea
-                        name="comment"
-                        defaultValue=""
+                        id="comment"
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
                     />
-                    <Button className={s.button} >Send Comment</Button>
+                    <Button onClick={onSendComment} className={s.button} >Send Comment</Button>
                 </div>
             </div>
         </>

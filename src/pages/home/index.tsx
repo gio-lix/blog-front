@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import s from "./Home.module.scss"
 import {classNames} from "../../utlis/classes";
 import Post from "../../components/post";
@@ -10,11 +10,17 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import {DataState} from "../../types/type";
 
+
 const HomePage = () => {
     const dispatch = useAppDispatch()
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
     const userData = useAppSelector((state: RootState) => state.auth.data)
     const [nav, setNav] = useState(0)
+    const [arrPosts, setArrPosts] = useState<any>([])
+
+    useEffect(() => {
+        setArrPosts(posts.items)
+    }, [posts])
 
 
     const isPostLoading = posts.status === "loading"
@@ -26,22 +32,15 @@ const HomePage = () => {
         dispatch(fetchTags())
     }, [])
 
-    const items = [
-        {
-            user: {
-                fullName: 'Mollie Andersson',
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-            },
-            text: 'hello friends',
-        },
-        {
-            user: {
-                fullName: 'Rebbbea anderson',
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-            },
-            text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-        },
-    ]
+    const navigation = useCallback((num: number) => {
+        if (num === 0) {
+            setNav(0)
+            setArrPosts(posts.items)
+        } else {
+            setNav(1)
+            setArrPosts([...arrPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
+        }
+    }, [arrPosts])
 
 
     return (
@@ -49,13 +48,13 @@ const HomePage = () => {
             {/*  navigation  */}
             <div className={s.home_article}>
                 <p
-                    onClick={() => setNav(0)}
+                    onClick={() => navigation(0)}
                     className={classNames(nav === 0 ? s.choice : "")}
                 >
                     new
                 </p>
                 <p
-                    onClick={() => setNav(1)}
+                    onClick={() => navigation(1)}
                     className={classNames(nav === 1 ? s.choice : "")}
                 >
                     popular
@@ -66,7 +65,7 @@ const HomePage = () => {
                 <div className={s.cart}>
                     {isPostLoading
                         ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)
-                        : posts.items.map((post: DataState, index: number) => {
+                        : arrPosts?.map((post: DataState, index: number) => {
                             return (
                                 <Post
                                     key={post._id}
@@ -83,7 +82,10 @@ const HomePage = () => {
                         items={tags.items}
                         isLoading={isTagLoading}
                     />
-                    <CommentsBlock item={items} isLoading={false}/>
+                    <CommentsBlock
+                        // item={items}
+                        isLoading={false}
+                    />
                 </aside>
             </div>
         </section>

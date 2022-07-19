@@ -1,11 +1,18 @@
+@import "src/styles/variables";
+
 .root {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
 
   > div:first-child {
+    .icon {
+      width: 30px;
+      height: 30px;
+      color: #363636;
+    }
 
   }
 
@@ -20,8 +27,13 @@
 
     > p:first-child {
       border-bottom: 1px solid gray;
-      padding-bottom: 10px;
+      font-weight: 500;
+      //padding-bottom: 5px;
 
+    }
+    > p:last-child {
+      margin-top: -10px;
+      font-size: $font-lg;
     }
   }
 }

@@ -40,7 +40,6 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
     };
 
 
-
     return (
         <div className={clsx(s.root, {[s.rootFull]: isFullPost})}>
             {isEditable ? (
@@ -103,6 +102,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
                         </li>
                         <li>
                             <BiMessageSquare size="21px"/>
+                            {post.comments?.length}
                         </li>
                     </ul>
                 </div>

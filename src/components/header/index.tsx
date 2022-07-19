@@ -3,18 +3,19 @@ import s from "./Header.module.scss"
 import Button from "../button";
 import {classNames} from "../../utlis/classes";
 import {Link} from "react-router-dom"
-import {useAppDispatch, useAppSelector} from "../../redux/store";
+import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {logout, selectAuth} from "../../redux/slices/auth";
 
 const Header = () => {
     const dispatch = useAppDispatch()
     const isAuth = useAppSelector(selectAuth)
 
-
     const onClickLogout = () => {
         dispatch(logout())
         window.localStorage.removeItem("token")
     }
+
+
 
     return (
         <>

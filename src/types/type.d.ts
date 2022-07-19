@@ -10,12 +10,19 @@ export interface UserState {
     fullName: string
 }
 
+export interface CommentsState {
+    _id: string
+    text: string
+    user: UserState
+}
+
 export interface DataState {
     _id: any,
     title: string,
     text: string,
     tags: string[],
     viewsCount: number,
+    comments: string[]
     user: UserProps,
     imageUrl: string,
     createdAt: string,

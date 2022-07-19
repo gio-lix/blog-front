@@ -1,15 +1,12 @@
 import React from 'react';
 import {SideBlock} from "../sideBar";
 import s from "./CommentBlogs.module.scss"
-import {UserProps} from "../../types/type";
+import {CommentsState} from "../../types/type";
+import {AiOutlineUserAdd} from "react-icons/ai"
 
-interface StateProps {
-    text: string
-    user: UserProps
-}
 
 interface Props {
-    item?: StateProps[]
+    item?: CommentsState[]
     children?: React.ReactNode
     isLoading?: boolean
 }
@@ -18,11 +15,11 @@ export const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
 
     return (
         <SideBlock  title="Comments">
-                {(isLoading ? [...Array(5)] : item)?.map((obj: StateProps, index: number) => {
+                {(isLoading ? [...Array(5)] : item)?.map((obj: CommentsState, index: number) => {
                     return (
                         <article key={index} className={s.root}>
                             <div>
-                                <img src={obj.user.avatarUrl} alt="alt" className={s.img}/>
+                                <AiOutlineUserAdd className={s.icon} />
                             </div>
                             <div >
                                 <p>

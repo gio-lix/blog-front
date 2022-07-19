@@ -22,7 +22,7 @@ export const fetchPosts: any = createAsyncThunk<Object,DataState>(
     async (_,thunkAPI) => {
         try {
             const {data} = await axios.get("/posts")
-            return data
+            return data.reverse()
         } catch (err) {
             return thunkAPI.rejectWithValue(err)
         }

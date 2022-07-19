@@ -5,28 +5,15 @@ import {useParams} from "react-router-dom"
 import axios from "../../axios";
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import Post from "../../components/post";
+import {CommentsState, DataState} from "../../types/type";
 
 const FullPost = () => {
-    const [data, setData] = useState()
-    const [isLoading, setIsLoading] = useState(true)
+    const [data, setData] = useState<DataState>()
+    const [comments, setComments] = useState<CommentsState[]>([])
+    const [commentText, setCommentText] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     const {id} = useParams()
 
-    const items = [
-        {
-            user: {
-                fullName: 'Mollie Andersson',
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-            },
-            text: 'Это тестовый комментарий',
-        },
-        {
-            user: {
-                fullName: 'Rebbbea anderson',
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-            },
-            text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-        },
-    ]
 
 
     useEffect(() => {
@@ -37,6 +24,27 @@ const FullPost = () => {
             console.log(err)
         })
     }, [])
+
+    useEffect(() => {
+        axios.get(`/posts/${id}/comment`).then((res) => {
+            setComments(res.data)
+            setIsLoading(false)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [comments])
+
+
+    const onSendComment = async () => {
+        try {
+            const data = await axios.post(`/posts/${id}/comment`, {text: commentText})
+            console.log(data)
+        }catch (err) {
+            console.log(err)
+        }finally {
+            setCommentText("")
+        }
+    }
 
     if (isLoading) {
         return <PostSkeleton image={true}/>
@@ -50,8 +58,12 @@ const FullPost = () => {
                 isLoading={isLoading}
             />
             }
-            <CommentsBlock item={items} isLoading={false}>
-                <AddComments/>
+            <CommentsBlock item={comments} isLoading={false}>
+                <AddComments
+                    commentText={commentText}
+                    setCommentText={setCommentText}
+                    onSendComment={onSendComment}
+                />
             </CommentsBlock>
 
         </section>
