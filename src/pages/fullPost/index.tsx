@@ -6,9 +6,12 @@ import axios from "../../axios";
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import Post from "../../components/post";
 import {CommentsState, DataState} from "../../types/type";
+import {useAppSelector} from "../../redux/store";
+import {selectAuth} from "../../redux/slices/auth";
 
 const FullPost = () => {
     const [data, setData] = useState<DataState>()
+    const isAuth = useAppSelector(selectAuth)
     const [comments, setComments] = useState<CommentsState[]>([])
     const [commentText, setCommentText] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -27,13 +30,13 @@ const FullPost = () => {
 
     useEffect(() => {
         axios.get(`/posts/${id}/comment`).then((res) => {
+            console.log("res.data - ", res.data)
             setComments(res.data)
             setIsLoading(false)
         }).catch((err) => {
             console.log(err)
         })
     }, [comments])
-
 
     const onSendComment = async () => {
         try {
@@ -59,11 +62,13 @@ const FullPost = () => {
             />
             }
             <CommentsBlock item={comments} isLoading={false}>
-                <AddComments
-                    commentText={commentText}
-                    setCommentText={setCommentText}
-                    onSendComment={onSendComment}
-                />
+                {isAuth && (
+                    <AddComments
+                        commentText={commentText}
+                        setCommentText={setCommentText}
+                        onSendComment={onSendComment}
+                    />
+                )}
             </CommentsBlock>
 
         </section>

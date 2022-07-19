@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import s from "./AddComent.module.scss"
 import Button from "../button";
 import {FaUserCircle} from "react-icons/fa"
