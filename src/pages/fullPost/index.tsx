@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {CommentsBlock} from "../../components/commentsBlog";
 import AddComments from "../../components/addComment";
 import {useParams} from "react-router-dom"
 import axios from "../../axios";
@@ -8,6 +7,7 @@ import Post from "../../components/post";
 import {CommentsState, DataState} from "../../types/type";
 import {useAppSelector} from "../../redux/store";
 import {selectAuth} from "../../redux/slices/auth";
+import CommentsBlock from "../../components/commentsBlog";
 
 const FullPost = () => {
     const [data, setData] = useState<DataState>()
@@ -16,7 +16,6 @@ const FullPost = () => {
     const [commentText, setCommentText] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const {id} = useParams()
-
 
 
     useEffect(() => {
@@ -29,22 +28,23 @@ const FullPost = () => {
     }, [])
 
     useEffect(() => {
-        axios.get(`/posts/${id}/comment`).then((res) => {
-            console.log("res.data - ", res.data)
-            setComments(res.data)
-            setIsLoading(false)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }, [comments])
+        axios.get(`/posts/${id}/comment`)
+            .then((res) => {
+                setComments(res.data)
+                setIsLoading(false)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
 
     const onSendComment = async () => {
         try {
             const data = await axios.post(`/posts/${id}/comment`, {text: commentText})
             console.log(data)
-        }catch (err) {
+        } catch (err) {
             console.log(err)
-        }finally {
+        } finally {
             setCommentText("")
         }
     }

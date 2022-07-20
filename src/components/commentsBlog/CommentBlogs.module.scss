@@ -5,13 +5,17 @@
   align-items: flex-start;
   justify-content: flex-start;
   margin-bottom: 5px;
-
+  position: relative;
 
   > div:first-child {
     .icon {
       width: 30px;
       height: 30px;
       color: #363636;
+    }
+    .pathIcon {
+      width: 20px;
+      height: 20px;
     }
 
   }
@@ -23,10 +27,18 @@
   }
 
   .commentsBox {
+
     margin: -16px 0 0 5px;
 
+    &:before {
+      content: "";
+      position: absolute;
+      min-width: 96%;
+      top: 23px;
+      height: 1px;
+      background-color: #a4b0b4;
+    }
     > p:first-child {
-      border-bottom: 1px solid gray;
       font-weight: 500;
       //padding-bottom: 5px;
 
@@ -36,4 +48,19 @@
       font-size: $font-lg;
     }
   }
+  .commentsBoxPath {
+    margin: -16px 0 0 5px;
+
+    > p:first-child {
+      //border-bottom: 1px solid gray;
+      font-weight: 500;
+      font-size: 10px;
+
+    }
+    > p:last-child {
+      margin-top: -10px;
+      font-size: 12px;
+    }
+  }
 }
+
