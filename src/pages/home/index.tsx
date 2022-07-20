@@ -3,12 +3,13 @@ import s from "./Home.module.scss"
 import {classNames} from "../../utlis/classes";
 import Post from "../../components/post";
 import {TagsBlock} from "../../components/tagBlogs";
-import {CommentsBlock} from "../../components/commentsBlog";
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {fetchPosts, fetchTags} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import {DataState} from "../../types/type";
+import axios from "../../axios";
+import CommentsBlock from "../../components/commentsBlog";
 
 
 const HomePage = () => {
@@ -16,10 +17,11 @@ const HomePage = () => {
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
     const userData = useAppSelector((state: RootState) => state.auth.data)
     const [nav, setNav] = useState(0)
-    const [arrPosts, setArrPosts] = useState<any>([])
+    const [allPosts, setAllPosts] = useState<any>([])
+    const [allComments, setAllComments] = useState<any>([])
 
     useEffect(() => {
-        setArrPosts(posts.items)
+        setAllPosts(posts.items)
     }, [posts])
 
 
@@ -35,13 +37,27 @@ const HomePage = () => {
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
-            setArrPosts(posts.items)
+            setAllPosts(posts.items)
         } else {
             setNav(1)
-            setArrPosts([...arrPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
+            setAllPosts([...allPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
         }
-    }, [arrPosts])
+    }, [allPosts])
 
+
+    useEffect(() => {
+        allPosts.map((item: any) => {
+            axios.get(`/posts/${item._id}/comment`)
+                .then((res) => {
+                    setAllComments(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        })
+    },[allPosts])
+
+    console.log("allComments - ", allComments)
 
     return (
         <section className="container">
@@ -65,7 +81,7 @@ const HomePage = () => {
                 <div className={s.cart}>
                     {isPostLoading
                         ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)
-                        : arrPosts?.map((post: DataState, index: number) => {
+                        : allPosts?.map((post: DataState, index: number) => {
                             return (
                                 <Post
                                     key={post._id}
@@ -83,7 +99,7 @@ const HomePage = () => {
                         isLoading={isTagLoading}
                     />
                     <CommentsBlock
-                        // item={items}
+                        item={allComments}
                         isLoading={false}
                     />
                 </aside>
