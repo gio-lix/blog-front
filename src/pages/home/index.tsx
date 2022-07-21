@@ -3,12 +3,13 @@ import s from "./Home.module.scss"
 import {classNames} from "../../utlis/classes";
 import Post from "../../components/post";
 import {TagsBlock} from "../../components/tagBlogs";
-import {CommentsBlock} from "../../components/commentsBlog";
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {fetchPosts, fetchTags} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import {DataState} from "../../types/type";
+import axios from "../../axios";
+import CommentsBlock from "../../components/commentsBlog";
 
 
 const HomePage = () => {
@@ -17,10 +18,13 @@ const HomePage = () => {
     const userData = useAppSelector((state: RootState) => state.auth.data)
     const [nav, setNav] = useState(0)
     const [allPosts, setAllPosts] = useState<DataState[]>([])
+    const [allComments, setAllComments] = useState<any>([])
+
 
     useEffect(() => {
         setAllPosts(posts.items)
-    } , [posts])
+    }, [posts])
+
 
 
     const isPostLoading = posts.status === "loading"
@@ -42,7 +46,19 @@ const HomePage = () => {
         }
     }, [allPosts])
 
-    console.log("allPosts - ", allPosts)
+
+    useEffect(() => {
+        allPosts.map((item: any) => {
+            axios.get(`/posts/${item._id}/comment`)
+                .then((res) => {
+                    setAllComments(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        })
+    },[allPosts])
+
 
     return (
         <section className="container">
@@ -84,7 +100,7 @@ const HomePage = () => {
                         isLoading={isTagLoading}
                     />
                     <CommentsBlock
-                        // item={items}
+                        item={allComments}
                         isLoading={false}
                     />
                 </aside>

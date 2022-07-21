@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {SideBlock} from "../sideBar";
 import s from "./CommentBlogs.module.scss"
 import {CommentsState} from "../../types/type";
 import {AiOutlineUserAdd} from "react-icons/ai"
+import { useParams, useLocation } from "react-router-dom"
+import clsx from "clsx";
 
 
 interface Props {
@@ -11,7 +13,11 @@ interface Props {
     isLoading?: boolean
 }
 
-export const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
+const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
+    const {id} = useParams()
+    const {pathname} = useLocation()
+
+    const path = pathname === `/posts/${id}`
 
     return (
         <SideBlock  title="Comments">
@@ -19,7 +25,7 @@ export const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
                     return (
                         <article key={index} className={s.root}>
                             <div>
-                                <AiOutlineUserAdd className={s.icon} />
+                                <AiOutlineUserAdd className={clsx(path ? s.icon : s.pathIcon)} />
                             </div>
                             <div >
                                 <p>
@@ -39,7 +45,7 @@ export const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
                                         {/*<Skeleton variant="text" height={18} width={230} />*/}
                                     </div>
                                 ) : (
-                                    <div  className={s.commentsBox}>
+                                    <div  className={clsx(path ? s.commentsBox : s.commentsBoxPath)}>
                                         <p>
                                             {obj.user.fullName}
                                         </p>
@@ -55,3 +61,4 @@ export const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
         </SideBlock>
     );
 };
+export default memo(CommentsBlock)
