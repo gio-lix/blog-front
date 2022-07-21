@@ -7,7 +7,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {fetchPosts, fetchTags} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
-import {DataState} from "../../types/type";
+import {CommentsState, DataState} from "../../types/type";
 import axios from "../../axios";
 import CommentsBlock from "../../components/commentsBlog";
 
@@ -18,7 +18,7 @@ const HomePage = () => {
     const userData = useAppSelector((state: RootState) => state.auth.data)
     const [nav, setNav] = useState(0)
     const [allPosts, setAllPosts] = useState<DataState[]>([])
-    const [allComments, setAllComments] = useState<any>([])
+    const [allComments, setAllComments] = useState<CommentsState[]>([])
 
 
     useEffect(() => {
