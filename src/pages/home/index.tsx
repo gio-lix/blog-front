@@ -16,11 +16,11 @@ const HomePage = () => {
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
     const userData = useAppSelector((state: RootState) => state.auth.data)
     const [nav, setNav] = useState(0)
-    const [arrPosts, setArrPosts] = useState<any>([])
+    const [allPosts, setAllPosts] = useState<DataState[]>([])
 
     useEffect(() => {
-        setArrPosts(posts.items)
-    }, [posts])
+        setAllPosts(posts.items)
+    } , [posts])
 
 
     const isPostLoading = posts.status === "loading"
@@ -35,13 +35,14 @@ const HomePage = () => {
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
-            setArrPosts(posts.items)
+            setAllPosts(posts.items)
         } else {
             setNav(1)
-            setArrPosts([...arrPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
+            setAllPosts([...allPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
         }
-    }, [arrPosts])
+    }, [allPosts])
 
+    console.log("allPosts - ", allPosts)
 
     return (
         <section className="container">
@@ -65,7 +66,7 @@ const HomePage = () => {
                 <div className={s.cart}>
                     {isPostLoading
                         ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)
-                        : arrPosts?.map((post: DataState, index: number) => {
+                        : allPosts?.map((post: DataState, index: number) => {
                             return (
                                 <Post
                                     key={post._id}

@@ -36,7 +36,7 @@ const FullPost = () => {
         }).catch((err) => {
             console.log(err)
         })
-    }, [comments])
+    }, [])
 
     const onSendComment = async () => {
         try {
