@@ -5,6 +5,8 @@ import {CommentsState} from "../../types/type";
 import {AiOutlineUserAdd} from "react-icons/ai"
 import { useParams, useLocation } from "react-router-dom"
 import clsx from "clsx";
+import { motion } from "framer-motion"
+import {fadeInUp} from "../../animation";
 
 
 interface Props {
@@ -19,11 +21,14 @@ const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
 
     const path = pathname === `/posts/${id}`
 
+
     return (
-        <SideBlock  title="Comments">
+        <SideBlock  >
                 {(isLoading ? [...Array(5)] : item)?.map((obj: CommentsState, index: number) => {
                     return (
-                        <article key={index} className={s.root}>
+                        <motion.div variants={fadeInUp}
+                            // variants={fadeInUp}
+                                    id={obj._id} key={index} className={s.root}>
                             <div>
                                 <AiOutlineUserAdd className={clsx(path ? s.icon : s.pathIcon)} />
                             </div>
@@ -55,10 +60,10 @@ const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
                                     </div>
                                 )}
                             </div>
-                        </article>)
+                        </motion.div>)
                 })}
             {children}
         </SideBlock>
     );
 };
-export default memo(CommentsBlock)
+export default memo(CommentsBlock);

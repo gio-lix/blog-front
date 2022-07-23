@@ -56,6 +56,7 @@ const AddPost = () => {
     const onChange = React.useCallback((value: any) => {
         setText(value);
     }, []);
+
     const options: any = React.useMemo(
         () => ({
             spellChecker: false,
@@ -82,7 +83,7 @@ const AddPost = () => {
                 })
                 .catch((err) => console.log(err))
         }
-    },[isEditing])
+    },[isEditing, id])
 
 
 

@@ -2,7 +2,6 @@
 @import "src/styles/mixin";
 
 .home {
-
   &_article {
     display: flex;
     margin-bottom: 30px;
@@ -40,17 +39,19 @@
   }
 
   &_grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    justify-content: space-between;
 
     .cart {
-      grid-column: 1 / 4;
+      width: 80%;
       height: auto;
       padding: 3px;
     }
     .info {
-      grid-column: 4 / 6;
+      display: flex;
+      flex-direction: column;
       padding: 0 20px;
+      margin-left: auto;
       height: auto;
     }
     .navLink {
@@ -60,18 +61,126 @@
   }
 }
 
+
+
+
+
+.tagsClass {
+  position: sticky!important;
+  top: 10px;
+  height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.tagsToggleClose {
+  position: relative;
+  height: 200px;
+  width: 70px;
+  background-color: white;
+  @include transition(width);
+
+  > p {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    transform: rotate(-90deg);
+    @include transition(transform);
+    cursor: pointer;
+  }
+}
+.tagsToggleOpen {
+  position: relative;
+  height: 200px;
+  width: 300px;
+  background-color: white;
+  @include transition(width);
+
+  > p {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    z-index: 10;
+    cursor: pointer;
+    @include transition(transform);
+  }
+}
+
+
+
 .commentsClasses {
   margin: -16px 0 0 5px;
-
   > p:first-child {
-    //border-bottom: 1px solid gray;
     font-weight: 500;
     font-size: 10px;
-    //padding-bottom: 5px;
-
   }
   > p:last-child {
     margin-top: -10px;
     font-size: 12px;
   }
 }
+
+
+
+.commentBox {
+  position: sticky!important;
+  top: 60px;
+  @include transition(top);
+  height: 450px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.commentTop {
+  top: 213px!important;
+  @include transition(top);
+}
+
+
+.commentBoxClose {
+  position: relative;
+  height: 450px;
+  width: 70px!important;
+  background-color: #faedcd !important;
+  overflow: hidden;
+  @include transition(width);
+
+  > p {
+    position: absolute;
+    top: 17px;
+    left: -12px;
+    transform: rotate(-90deg);
+    @include transition(transform);
+  }
+}
+
+.commentBoxOpen {
+  position: relative;
+  height: 450px;
+  width: 300px!important;
+  background-color: #faedcd !important;
+  padding: 60px 0 0 0!important;
+  @include transition(width);
+
+  > p {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    transform: rotate(0deg);
+    @include transition(transform);
+  }
+}
+
+.middle {
+  overflow: auto;
+  height: 370px;
+  width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+

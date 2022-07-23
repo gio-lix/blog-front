@@ -25,7 +25,7 @@ const FullPost = () => {
         }).catch((err) => {
             console.log(err)
         })
-    }, [])
+    }, [id])
 
     useEffect(() => {
         axios.get(`/posts/${id}/comment`)
@@ -36,7 +36,7 @@ const FullPost = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [])
+    }, [id])
 
     const onSendComment = async () => {
         try {

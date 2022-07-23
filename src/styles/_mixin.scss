@@ -1,4 +1,4 @@
 // transition
 @mixin transition ($val) {
-  transition: $val 200ms ease-in-out;
+  transition: $val 200ms ease-in-out!important;
 }
