@@ -58,9 +58,6 @@ export const fetchAllPosts: any = createAsyncThunk<Object,DataState>(
     async (skip,thunkAPI) => {
 
         const {page, searchParams}: any = skip
-
-        console.log("page, searchParams - - ", page, searchParams)
-
         try {
             const {data} = await axios.get(`/posts?skip=${page}&search=${searchParams}`)
             if (!data.data.length) {
@@ -79,8 +76,7 @@ const postSlice = createSlice({
     initialState,
     reducers: {
         search(state: any, action: any) {
-            console.log("actionn000000000000000000000")
-            state.posts.items = [ ]
+            state.posts.items = []
         }
     },
     extraReducers: {
@@ -107,7 +103,6 @@ const postSlice = createSlice({
         [fetchAllPosts.rejected]: (state) => {
             state.posts.status = "error"
         },
-
 
 
 

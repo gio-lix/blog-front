@@ -65,15 +65,17 @@ const HomePage = () => {
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
-            setSearchParams("")
             if (searchParams === "") return
+            setSearchParams("")
             dispatch(search("clear"))
+            setPage(0)
 
         } else {
             setNav(1)
-            setSearchParams( "popular")
             if (searchParams) return
+            setSearchParams( "popular")
             dispatch(search("clear"))
+            setPage(0)
         }
     }, [posts.items])
 
