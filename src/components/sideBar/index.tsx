@@ -11,7 +11,6 @@ interface SideBarProps {
 export const SideBlock = ({ title, children }: SideBarProps) => {
     return (
         <motion.div variants={fadeInUp}
-            // variants={fadeInUp}
             className={s.root}>
             <p className={s.title}>
                {title}

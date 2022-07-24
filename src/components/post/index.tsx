@@ -31,7 +31,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
     const path = location.pathname === "/"
 
     if (isLoading) {
-        return <PostSkeleton image={false}/>;
+        return <PostSkeleton />;
     }
     const onClickRemove = () => {
         dispatch(fetchRemovePosts(_id))

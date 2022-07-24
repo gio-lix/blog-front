@@ -17,12 +17,14 @@ const initialState = {
 }
 
 
+
+
 export const fetchPosts: any = createAsyncThunk<Object,DataState>(
     "posts/fetchPosts",
     async (_,thunkAPI) => {
         try {
             const {data} = await axios.get("/posts")
-            return data.reverse()
+            return data
         } catch (err) {
             return thunkAPI.rejectWithValue(err)
         }
@@ -50,10 +52,37 @@ export const fetchRemovePosts: any = createAsyncThunk<Object,DataState>(
         }
     })
 
+
+export const fetchAllPosts: any = createAsyncThunk<Object,DataState>(
+    "posts/fetchAllPosts",
+    async (skip,thunkAPI) => {
+
+        const {page, searchParams}: any = skip
+
+        console.log("page, searchParams - - ", page, searchParams)
+
+        try {
+            const {data} = await axios.get(`/posts?skip=${page}&search=${searchParams}`)
+            if (!data.data.length) {
+                return ;
+            }
+            return data.data
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err)
+        }
+    })
+
+
+
 const postSlice = createSlice({
     name: "posts",
     initialState,
-    reducers: {},
+    reducers: {
+        search(state: any, action: any) {
+            console.log("actionn000000000000000000000")
+            state.posts.items = [ ]
+        }
+    },
     extraReducers: {
         // Fetch posts
         [fetchPosts.pending]: (state) => {
@@ -66,6 +95,21 @@ const postSlice = createSlice({
         [fetchPosts.rejected]: (state) => {
             state.posts.status = "error"
         },
+
+        [fetchAllPosts.pending]: (state) => {
+            state.posts.status = "loading"
+        },
+        [fetchAllPosts.fulfilled]: (state, action: PayloadAction<ActionReturnType<typeof initialState>>) => {
+
+            state.posts.items = [...state.posts.items,...action.payload]
+            state.posts.status = "loaded"
+        },
+        [fetchAllPosts.rejected]: (state) => {
+            state.posts.status = "error"
+        },
+
+
+
 
         // Fetch tags
         [fetchTags.pending]: (state) => {
@@ -86,5 +130,5 @@ const postSlice = createSlice({
 
     }
 })
-
+export const {search} = postSlice.actions
 export const postReducer = postSlice.reducer

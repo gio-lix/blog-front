@@ -50,7 +50,7 @@ const FullPost = () => {
     }
 
     if (isLoading) {
-        return <PostSkeleton image={true}/>
+        return <PostSkeleton />
     }
 
 

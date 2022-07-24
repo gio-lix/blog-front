@@ -12,6 +12,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
+    <React.StrictMode>
         <SkeletonTheme baseColor="#d1d1e0">
             <BrowserRouter>
                 <Provider store={store}>
@@ -19,6 +20,7 @@ root.render(
                 </Provider>
             </BrowserRouter>
         </SkeletonTheme>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

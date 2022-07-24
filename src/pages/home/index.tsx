@@ -3,7 +3,7 @@ import s from "./Home.module.scss"
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {classNames} from "../../utlis/classes";
 import Post from "../../components/post";
-import {fetchPosts, fetchTags} from "../../redux/slices/posts";
+import {fetchAllPosts, fetchTags, search} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import {CommentsState, DataState} from "../../types/type";
@@ -14,8 +14,6 @@ import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
 
 
-
-
 const HomePage = () => {
     const dispatch = useAppDispatch()
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
@@ -23,41 +21,65 @@ const HomePage = () => {
     const [nav, setNav] = useState(0)
     const [openComments, setOpenComments] = useState<boolean>(false)
     const [openTags, setOpenTags] = useState<boolean>(false)
-    const [allPosts, setAllPosts] = useState<DataState[]>([])
     const [allComments, setAllComments] = useState<CommentsState[]>([])
     const [postId, setPostId] = useState<string>()
-
+    const [page, setPage] = useState(0)
     const scrollRef = useRef<any | null>(null)
-
-    useEffect(() => {
-        setAllPosts(posts.items)
-    }, [posts])
 
 
     const isPostLoading = posts.status === "loading"
     // const isTagLoading = tags.status === "loading"
 
 
+
+    const [searchParams, setSearchParams] = useState("")
+
+
+
     useEffect(() => {
-        dispatch(fetchPosts())
+        dispatch(fetchAllPosts({page, searchParams}))
+    }, [page, searchParams])
+
+
+    useEffect(() => {
         dispatch(fetchTags())
     }, [dispatch])
+
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll)
+        return () => window.addEventListener('scroll', handleScroll)
+    }, []);
+
+    const handleScroll = () => {
+        const scrollHeight = Math.ceil(window.scrollY + window.innerHeight)
+        const windowHeight = document.documentElement.scrollHeight
+
+        if (scrollHeight === windowHeight) {
+            setPage(prev => prev + 1)
+        }
+    }
+
 
 
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
-            setAllPosts(posts.items)
+            setSearchParams("")
+            if (searchParams === "") return
+            dispatch(search("clear"))
+
         } else {
             setNav(1)
-            setAllPosts([...allPosts]?.sort((a, b) => b.viewsCount - a.viewsCount))
+            setSearchParams( "popular")
+            if (searchParams) return
+            dispatch(search("clear"))
         }
-    }, [allPosts, posts.items])
-
-
+    }, [posts.items])
 
 
     useEffect(() => {
+        if (!postId) return
         axios.get(`/posts/${postId}/comment`)
             .then(({data}) => {
                 setAllComments(data)
@@ -65,7 +87,7 @@ const HomePage = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [allPosts , postId])
+    }, [posts.items , postId])
 
 
 
@@ -83,7 +105,6 @@ const HomePage = () => {
     const callBack = useCallback((entries: any) => {
         entries.forEach((entry: any) => {
             if (entry.isIntersecting) {
-                console.log("entry.target.id - - ", entry.target.id)
                 setPostId(entry.target.id)
             }
         })
@@ -118,26 +139,30 @@ const HomePage = () => {
                 </p>
             </div>
 
-            <div  className={s.home_grid}>
-                <div ref={scrollRef} className={s.cart} >
-                    {isPostLoading
-                        ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)
-                        : allPosts?.map((post: DataState, index: number) => {
-                            return (
-                                <div className=".scrollArea" id={post._id} key={post._id}>
-                                     <Post
-                                         post={post}
-                                         isLoading={false}
-                                         isFullPost={false}
-                                         isEditable={userData?._id === post.user._id}
-                                     />
-                                </div>
-                            )
-                        })}
+            <div className={s.home_grid}>
+                <div ref={scrollRef} className={s.cart}>
+                    {posts.items?.map((post: DataState, index: number) => {
+                        return (
+                            <div  className=".scrollArea" id={post._id} key={`${post._id}_${index}`}>
+                                <Post
+                                    post={post}
+                                    isLoading={false}
+                                    isFullPost={false}
+                                    isEditable={userData?._id === post.user._id}
+                                />
+                            </div>
+                        )
+                    })}
+                    {isPostLoading ? (
+                        <div>
+                            {[...Array(5)].map((e, i: number) => <PostSkeleton key={i}/>)}
+                        </div>
+                    ) : null}
+
                 </div>
                 <div className={s.info}>
                     <aside className={s.tagsClass}>
-                        <div  className={clsx( openTags ? s.tagsToggleOpen : s.tagsToggleClose)}
+                        <div className={clsx(openTags ? s.tagsToggleOpen : s.tagsToggleClose)}
                         >
                             <p onClick={() => setOpenTags(!openTags)}>Tags</p>
                             {openTags ? (
@@ -148,7 +173,7 @@ const HomePage = () => {
                         </div>
                     </aside>
 
-                    <div  className={clsx(s.commentBox, openTags ? s.commentTop : "")}>
+                    <div className={clsx(s.commentBox, openTags ? s.commentTop : "")}>
                         <div className={clsx(openComments ? s.commentBoxOpen : s.commentBoxClose,)}>
                             <p onClick={() => setOpenComments(!openComments)}>Comments</p>
                             <motion.div initial="initial" variants={stagger} animate='animate' className={s.middle}>
@@ -160,9 +185,10 @@ const HomePage = () => {
                                 ) : null}
                             </motion.div>
                         </div>
-                    </div >
+                    </div>
                 </div>
             </div>
+
         </main>
     );
 };
@@ -170,3 +196,17 @@ const HomePage = () => {
 export default HomePage;
 
 
+{/*{isPostLoading*/}
+{/*    ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)*/}
+{/*    : allPosts?.map((post: DataState, index: number) => {*/}
+{/*        return (*/}
+{/*            <div  className=".scrollArea" id={post._id} key={`${post._id}_${index}`}>*/}
+{/*                 <Post*/}
+{/*                     post={post}*/}
+{/*                     isLoading={false}*/}
+{/*                     isFullPost={false}*/}
+{/*                     isEditable={userData?._id === post.user._id}*/}
+{/*                 />*/}
+{/*            </div>*/}
+{/*        )*/}
+{/*    })}*/}

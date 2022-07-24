@@ -10,7 +10,6 @@ import {useAppDispatch} from "./redux/store";
 import {fetchAuthMe} from "./redux/slices/auth";
 
 
-
 function App() {
     const dispatch = useAppDispatch()
 

@@ -1,14 +1,12 @@
 import s from "./Skaleton.module.scss"
 import Skeleton from 'react-loading-skeleton'
 
-interface Props {
-    image: boolean
-}
 
-export const PostSkeleton = ({image}: Props) => {
+
+export const PostSkeleton = () => {
     return (
         <div className={s.root}>
-            <Skeleton  height={image ? 300 : 200} />
+            <Skeleton  height={300} />
             <div className={s.info}>
                 <Skeleton className={s.title}/>
                 <div>
