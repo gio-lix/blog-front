@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import s from "./Home.module.scss"
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {classNames} from "../../utlis/classes";
@@ -12,6 +12,7 @@ import axios from "../../axios";
 import clsx from "clsx";
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
+import {TagsBlock} from "../../components/tagBlogs";
 
 
 const HomePage = () => {
@@ -24,21 +25,20 @@ const HomePage = () => {
     const [allComments, setAllComments] = useState<CommentsState[]>([])
     const [postId, setPostId] = useState<string>()
     const [page, setPage] = useState(0)
+    const [tag, setTag] = useState<string>("")
     const scrollRef = useRef<any | null>(null)
 
 
     const isPostLoading = posts.status === "loading"
-    // const isTagLoading = tags.status === "loading"
+    const isTagLoading = tags.status === "loading"
 
 
 
     const [searchParams, setSearchParams] = useState("")
 
-
-
-    useEffect(() => {
-        dispatch(fetchAllPosts({page, searchParams}))
-    }, [page, searchParams])
+    useLayoutEffect(() => {
+        dispatch(fetchAllPosts({page, searchParams, tag}))
+    }, [page, searchParams, tag])
 
 
     useEffect(() => {
@@ -50,8 +50,8 @@ const HomePage = () => {
         window.addEventListener('scroll', handleScroll)
         return () => window.addEventListener('scroll', handleScroll)
     }, []);
-
     const handleScroll = () => {
+        setOpenTags(false)
         const scrollHeight = Math.ceil(window.scrollY + window.innerHeight)
         const windowHeight = document.documentElement.scrollHeight
 
@@ -65,6 +65,7 @@ const HomePage = () => {
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
+            setTag("")
             if (searchParams === "") return
             setSearchParams("")
             dispatch(search("clear"))
@@ -72,6 +73,7 @@ const HomePage = () => {
 
         } else {
             setNav(1)
+            setTag("")
             if (searchParams) return
             setSearchParams( "popular")
             dispatch(search("clear"))
@@ -123,6 +125,7 @@ const HomePage = () => {
 
 
 
+
     return (
         <main className="container">
             {/*  navigation  */}
@@ -141,7 +144,7 @@ const HomePage = () => {
                 </p>
             </div>
 
-            <div className={s.home_grid}>
+            <section className={s.home_grid}>
                 <div ref={scrollRef} className={s.cart}>
                     {posts.items?.map((post: DataState, index: number) => {
                         return (
@@ -150,7 +153,7 @@ const HomePage = () => {
                                     post={post}
                                     isLoading={false}
                                     isFullPost={false}
-                                    isEditable={userData?._id === post.user._id}
+                                    isEditable={(post as any)?.user === userData?._id}
                                 />
                             </div>
                         )
@@ -164,13 +167,17 @@ const HomePage = () => {
                 </div>
                 <div className={s.info}>
                     <aside className={s.tagsClass}>
-                        <div className={clsx(openTags ? s.tagsToggleOpen : s.tagsToggleClose)}
-                        >
+                        <div className={clsx(openTags ? s.tagsToggleOpen : s.tagsToggleClose)}>
                             <p onClick={() => setOpenTags(!openTags)}>Tags</p>
                             {openTags ? (
-                                <>
-                                </>
-                                // <TagsBlock items={tags.items} isLoading={isTagLoading}/>
+                                <TagsBlock
+                                    setTag={setTag}
+                                    items={tags.items}
+                                    isLoading={isTagLoading}
+                                    setSearchParams={setSearchParams}
+                                    setPage={setPage}
+                                    navigation={navigation}
+                                />
                             ) : null}
                         </div>
                     </aside>
@@ -189,26 +196,10 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </section>
         </main>
     );
 };
 
 export default HomePage;
 
-
-{/*{isPostLoading*/}
-{/*    ? [...Array(5)].map((e, i: number) => <PostSkeleton image={false} key={i}/>)*/}
-{/*    : allPosts?.map((post: DataState, index: number) => {*/}
-{/*        return (*/}
-{/*            <div  className=".scrollArea" id={post._id} key={`${post._id}_${index}`}>*/}
-{/*                 <Post*/}
-{/*                     post={post}*/}
-{/*                     isLoading={false}*/}
-{/*                     isFullPost={false}*/}
-{/*                     isEditable={userData?._id === post.user._id}*/}
-{/*                 />*/}
-{/*            </div>*/}
-{/*        )*/}
-{/*    })}*/}

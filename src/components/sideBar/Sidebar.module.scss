@@ -4,10 +4,10 @@
   width: 100%;
   height: auto;
   border-radius: 5px;
-  background-color: #faedcd !important;
-
+  background-color: #faedcd;
+  padding-top: 20px;
   margin-bottom: 20px;
-  padding: 25px 25px;
+
 
 }
 
@@ -16,4 +16,15 @@
   font-weight: 700;
   font-size: 17px;
   letter-spacing: 2px;
+}
+
+.colorWhite {
+  background-color: white!important;
+  margin-top: 10px!important;
+  overflow: scroll;
+  height: 185px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
 }

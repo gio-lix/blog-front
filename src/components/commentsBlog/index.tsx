@@ -26,13 +26,11 @@ const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
         <SideBlock  >
                 {(isLoading ? [...Array(5)] : item)?.map((obj: CommentsState, index: number) => {
                     return (
-                        <motion.div variants={fadeInUp}
-                            // variants={fadeInUp}
-                                    id={obj._id} key={index} className={s.root}>
+                        <motion.div variants={fadeInUp} id={obj._id} key={index} className={s.root}>
                             <div>
                                 <AiOutlineUserAdd className={clsx(path ? s.icon : s.pathIcon)} />
                             </div>
-                            <div >
+                            <div>
                                 <p>
                                     {isLoading ? (
                                         <>
