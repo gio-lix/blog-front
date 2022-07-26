@@ -13,34 +13,28 @@ interface TagBlogsProps {
     setTag: Function
     setSearchParams: Function
     setPage: Function
-    navigation: Function
+    setNav: Function
+    tag: any
 }
 
-export const TagsBlock = ({ items, isLoading = true,setTag, setSearchParams,navigation, setPage }: TagBlogsProps) => {
+export const TagsBlock = ({ items, isLoading = true,setTag, setSearchParams,setNav, setPage,tag }: TagBlogsProps) => {
     const dispatch = useAppDispatch()
-
     const tagsFunc = (name: string) => {
+        if (tag === name) {
+            return
+        }
+        dispatch(search("clear"))
         window.scrollTo(0, 0);
-        setTag((prev: string) => {
-            if (prev === name) {
-                return name
-            } else {
-                dispatch(search("clear"))
-                setSearchParams("")
-                setPage(0)
-                navigation(0)
-                return  name
-            }
-
-        })
+        setPage((prev: number): number => prev = 0)
+        setNav((prev: number): number => prev = 0)
+        setSearchParams((prev: string): string => prev = "")
+        setTag((prev: string) => prev = name)
     }
-    //        window.scrollTo(0, 0);
 
     return (
         <SideBlock title="tags">
                 {(isLoading ? [...Array(5)] : items).map((name: any, i: number) => (
-                    <div
-                        key={i}
+                    <div key={i}
                         onClick={() => tagsFunc(name)}
                         className={s.root}
                     >

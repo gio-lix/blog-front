@@ -19,6 +19,7 @@ const initialState = {
 
 
 
+
 export const fetchPosts: any = createAsyncThunk<Object,DataState>(
     "posts/fetchPosts",
     async (_,thunkAPI) => {
@@ -58,16 +59,12 @@ export const fetchRemovePosts: any = createAsyncThunk<Object,DataState>(
 export const fetchAllPosts: any = createAsyncThunk<Object,DataState>(
     "posts/fetchAllPosts",
     async (skip,thunkAPI) => {
-
         const {page, searchParams, tag}: any = skip
-
-
         try {
             const {data} = await axios.get(`/posts?skip=${page}&search=${searchParams}&tag=${tag}`)
             if (!data.data.length) {
                 return;
             }
-                console.log("data.data - ", data.data)
             return data.data
         } catch (err) {
             return thunkAPI.rejectWithValue(err)
@@ -98,6 +95,7 @@ const postSlice = createSlice({
         },
 
         [fetchAllPosts.pending]: (state) => {
+            console.log("fetching")
             state.posts.status = "loading"
         },
         [fetchAllPosts.fulfilled]: (state, action: PayloadAction<ActionReturnType<typeof initialState>>) => {
@@ -111,9 +109,6 @@ const postSlice = createSlice({
         [fetchAllPosts.rejected]: (state) => {
             state.posts.status = "error"
         },
-
-
-
 
 
         // Fetch tags

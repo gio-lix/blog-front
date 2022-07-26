@@ -45,7 +45,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
                      <button onClick={() => navigate(`/posts/${post._id}/edit`)}>
                          <VscEdit className={s.icons1}/>
                      </button>
-                     <button onClick={onClickRemove}>
+                     <button onClick={() => onClickRemove()}>
                          <VscChromeClose className={s.icons2}/>
                      </button>
                  </div>

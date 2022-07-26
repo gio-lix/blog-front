@@ -5,17 +5,23 @@ import axios from "../../axios";
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import Post from "../../components/post";
 import {CommentsState, DataState} from "../../types/type";
-import {useAppSelector} from "../../redux/store";
+import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {selectAuth} from "../../redux/slices/auth";
 import CommentsBlock from "../../components/commentsBlog";
+import {fetchPostsComments} from "../../redux/slices/comments";
 
 const FullPost = () => {
+    const dispatch = useAppDispatch()
     const [data, setData] = useState<DataState>()
     const isAuth = useAppSelector(selectAuth)
+    const [count, setCount] = useState<number>(0)
     const [comments, setComments] = useState<CommentsState[]>([])
     const [commentText, setCommentText] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const {allComments,status} = useAppSelector((state: RootState) => state.comments)
     const {id} = useParams()
+
+
 
 
     useEffect(() => {
@@ -28,20 +34,13 @@ const FullPost = () => {
     }, [id])
 
     useEffect(() => {
-        axios.get(`/posts/${id}/comment`)
-            .then((res) => {
-                setComments(res.data)
-                setIsLoading(false)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [id])
+        dispatch(fetchPostsComments(id))
+    }, [id, count])
 
     const onSendComment = async () => {
         try {
             const data = await axios.post(`/posts/${id}/comment`, {text: commentText})
-            console.log(data)
+            setCount((prev) => prev + 1 )
         } catch (err) {
             console.log(err)
         } finally {
@@ -61,7 +60,7 @@ const FullPost = () => {
                 isLoading={isLoading}
             />
             }
-            <CommentsBlock item={comments} isLoading={false}>
+            <CommentsBlock item={allComments} isLoading={false}>
                 {isAuth && (
                     <AddComments
                         commentText={commentText}

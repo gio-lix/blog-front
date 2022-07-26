@@ -1,6 +1,11 @@
 @import "src/styles/variables";
 @import "src/styles/mixin";
 
+
+.bottom {
+  margin-bottom: 100px;
+}
+
 .home {
   &_article {
     display: flex;
@@ -139,7 +144,7 @@
   position: sticky!important;
   top: 60px;
   @include transition(top);
-  max-height: 400px;
+  max-height: 390px;
   height: 100%;
   width: 100%;
   display: flex;
@@ -154,7 +159,7 @@
 
 .commentBoxClose {
   position: relative;
-  max-height: 400px;
+  max-height: 390px;
   width: 70px!important;
   background-color: #faedcd !important;
   overflow: hidden;
@@ -171,7 +176,7 @@
 
 .commentBoxOpen {
   position: relative;
-  max-height: 400px;
+  max-height: 390px;
   width: 300px!important;
   background-color: #faedcd !important;
   padding: 60px 0 0 0!important;
@@ -188,7 +193,7 @@
 
 .middle {
   overflow: auto;
-  max-height: 350px;
+  max-height: 340px;
   width: 100%;
   &::-webkit-scrollbar {
     display: none;
