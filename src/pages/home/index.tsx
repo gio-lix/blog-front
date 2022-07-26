@@ -34,10 +34,11 @@ const HomePage = () => {
     const isPostLoading = posts.status === "loading"
     const isTagLoading = tags.status === "loading"
 
+
+
     useLayoutEffect(() => {
         dispatch(fetchAllPosts({page, searchParams, tag}))
     }, [page, searchParams, tag])
-
 
 
     useEffect(() => {
@@ -58,7 +59,6 @@ const HomePage = () => {
         }
 
     }
-
 
     const navigation = useCallback((num: number) => {
         if (num === 0) {
