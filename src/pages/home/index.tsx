@@ -38,7 +38,24 @@ const HomePage = () => {
 
     useLayoutEffect(() => {
         dispatch(fetchAllPosts({page, searchParams, tag}))
+
     }, [page, searchParams, tag])
+
+    const handleEndConcert = () => {
+        setNav(0)
+        setTag("")
+        setSearchParams("")
+        dispatch(search("clear"))
+    }
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleEndConcert);
+        return () => {
+            window.removeEventListener('beforeunload', handleEndConcert);
+            handleEndConcert()
+
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -59,6 +76,9 @@ const HomePage = () => {
         }
 
     }
+
+
+
 
     const navigation = useCallback((num: number) => {
         if (num === 0) {
