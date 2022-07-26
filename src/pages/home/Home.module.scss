@@ -153,6 +153,12 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+
+  > div {
+    > p {
+      cursor: pointer;
+    }
+  }
 }
 
 .commentTop {
