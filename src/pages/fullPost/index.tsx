@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom"
 import axios from "../../axios";
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import Post from "../../components/post";
-import {CommentsState, DataState} from "../../types/type";
+import {DataState} from "../../types/type";
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import {selectAuth} from "../../redux/slices/auth";
 import CommentsBlock from "../../components/commentsBlog";
@@ -15,13 +15,10 @@ const FullPost = () => {
     const [data, setData] = useState<DataState>()
     const isAuth = useAppSelector(selectAuth)
     const [count, setCount] = useState<number>(0)
-    const [comments, setComments] = useState<CommentsState[]>([])
     const [commentText, setCommentText] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const {allComments,status} = useAppSelector((state: RootState) => state.comments)
+    const {allComments} = useAppSelector((state: RootState) => state.comments)
     const {id} = useParams()
-
-
 
 
     useEffect(() => {

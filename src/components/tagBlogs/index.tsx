@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React from 'react';
 import {SideBlock} from "../sideBar";
 import {RiArtboard2Line} from "react-icons/ri";
 import s from './TagBlogs.module.scss'
@@ -25,19 +25,16 @@ export const TagsBlock = ({ items, isLoading = true,setTag, setSearchParams,setN
         }
         dispatch(search("clear"))
         window.scrollTo(0, 0);
-        setPage((prev: number): number => prev = 0)
-        setNav((prev: number): number => prev = 0)
-        setSearchParams((prev: string): string => prev = "")
-        setTag((prev: string) => prev = name)
+        setPage(0)
+        setNav(0)
+        setSearchParams("")
+        setTag(name)
     }
 
     return (
         <SideBlock title="tags">
                 {(isLoading ? [...Array(5)] : items).map((name: any, i: number) => (
-                    <div key={i}
-                        onClick={() => tagsFunc(name)}
-                        className={s.root}
-                    >
+                    <div key={i} onClick={() => tagsFunc(name)} className={s.root}>
                             {isLoading ? (
                                 <p>
                                     <Skeleton className={s.skeleton} />

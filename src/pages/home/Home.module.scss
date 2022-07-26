@@ -100,17 +100,27 @@
   position: relative;
   height: 200px;
   width: 300px;
+  overflow: hidden;
   background-color: white;
-  border: 1px solid red;
+  border: 1px solid greenyellow;
   @include transition(width);
+
+  &:hover {
+    > p {
+      color: #548a02;
+    }
+  }
 
   > p {
     background-color: white;
+    height: 28px;
+    width: 55px;
+    font-weight: 500;
   }
 
   > p {
     position: absolute;
-    top: -5px;
+    top: -5.2px;
     left: 0;
     z-index: 10;
     cursor: pointer;
@@ -118,11 +128,6 @@
     @include transition(transform);
   }
 }
-//.tagsInfo  {
-//  background-color: red;
-//  width: 100%;
-//  height: 250px;
-//}
 
 
 .commentsClasses {
@@ -140,7 +145,6 @@
 
 
 .commentBox {
-
   position: sticky!important;
   top: 60px;
   @include transition(top);

@@ -1,10 +1,10 @@
 import React from 'react';
 import s from "./Header.module.scss"
 import Button from "../button";
-import {classNames} from "../../utlis/classes";
 import {Link} from "react-router-dom"
 import {useAppDispatch, useAppSelector} from "../../redux/store";
 import {logout, selectAuth} from "../../redux/slices/auth";
+import clsx from "clsx";
 
 const Header = () => {
     const dispatch = useAppDispatch()
@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <>
-            <div className={classNames("flex flex-jc-sb flex-ai-c  container",s.header)}>
+            <div className={clsx("flex flex-jc-sb flex-ai-c  container",s.header)}>
                 <Link className={s.logo} to="/">
                     <div>logo</div>
                 </Link>

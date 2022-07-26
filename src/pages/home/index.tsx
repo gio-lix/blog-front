@@ -1,14 +1,12 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import s from "./Home.module.scss"
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
-import {classNames} from "../../utlis/classes";
 import Post from "../../components/post";
 import {fetchAllPosts, fetchTags, search} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
-import {CommentsState, DataState} from "../../types/type";
+import { DataState} from "../../types/type";
 import CommentsBlock from "../../components/commentsBlog";
-import axios from "../../axios";
 import clsx from "clsx";
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
@@ -29,7 +27,7 @@ const HomePage = () => {
     const [page, setPage] = useState(0)
     const [tag, setTag] = useState<string>("")
     const scrollRef = useRef<any | null>(null)
-    const {allComments,status} = useAppSelector((state: RootState) => state.comments)
+    const {allComments} = useAppSelector((state: RootState) => state.comments)
     const [searchParams, setSearchParams] = useState("")
 
 
@@ -55,9 +53,7 @@ const HomePage = () => {
         const scrollHeight = Math.ceil(window.scrollY + window.innerHeight)
         const windowHeight = Math.floor(document.documentElement.scrollHeight)
         if (scrollHeight === windowHeight) {
-            setPage((prev: number): number => {
-                return prev + 1
-            })
+            setPage((prev: number): number =>  prev + 1)
             return
         }
 
@@ -66,19 +62,19 @@ const HomePage = () => {
 
     const navigation = useCallback((num: number) => {
         if (num === 0) {
-            setNav(prev => prev = 0)
-            setTag((prev) => prev = "")
+            setNav(0)
+            setTag("")
             if (searchParams === "") return
-            setSearchParams((prev) => prev = "")
+            setSearchParams("")
             dispatch(search("clear"))
-            setPage(prev => prev = 0)
+            setPage(0)
         } else {
-            setNav(prev => prev = 1)
-            setTag((prev) => prev = "")
+            setNav(1)
+            setTag("")
             if (searchParams) return
-            setSearchParams((prev: string): string => prev = "popular")
+            setSearchParams("popular")
             dispatch(search("clear"))
-            setPage(prev => prev = 0)
+            setPage(0)
         }
     }, [posts.items])
 
@@ -102,7 +98,7 @@ const HomePage = () => {
                 setPostId(entry.target.id)
             }
         })
-    }, [scrollRef, options])
+    }, [scrollRef, options, openComments])
 
 
     let observer = new IntersectionObserver(callBack, options)
@@ -122,18 +118,11 @@ const HomePage = () => {
     return (
         <main className={clsx("container", s.bottom)}>
             {/*  navigation  */}
-
             <div className={s.home_article}>
-                <p
-                    onClick={() => navigation(0)}
-                    className={classNames(nav === 0 ? s.choice : "")}
-                >
+                <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
                     new
                 </p>
-                <p
-                    onClick={() => navigation(1)}
-                    className={classNames(nav === 1 ? s.choice : "")}
-                >
+                <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
                     popular
                 </p>
             </div>
