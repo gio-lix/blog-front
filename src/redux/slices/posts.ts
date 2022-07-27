@@ -13,11 +13,9 @@ const initialState = {
     tags: {
         items: [] as string[] | [],
         status: "loading"
-    }
+    },
+    search: ""
 }
-
-
-
 
 
 export const fetchPosts: any = createAsyncThunk<Object,DataState>(
@@ -59,12 +57,16 @@ export const fetchRemovePosts: any = createAsyncThunk<Object,DataState>(
 export const fetchAllPosts: any = createAsyncThunk<Object,DataState>(
     "posts/fetchAllPosts",
     async (skip,thunkAPI) => {
-        const {page, searchParams, tag}: any = skip
+        const {page, categoryParams, tag, search}: any = skip
+
+        console.log("toolkit - ",  {page, categoryParams, tag, search})
+
         try {
-            const {data} = await axios.get(`/posts?skip=${page}&search=${searchParams}&tag=${tag}`)
+            const {data} = await axios.get(`/posts?skip=${page}&category=${categoryParams}&search=${search}&tag=${tag}`)
             if (!data.data.length) {
                 return;
             }
+            console.log("data = > ", data)
             return data.data
         } catch (err) {
             return thunkAPI.rejectWithValue(err)
@@ -77,8 +79,11 @@ const postSlice = createSlice({
     name: "posts",
     initialState,
     reducers: {
-        search(state: typeof initialState, action) {
+        categoryReducer(state: typeof initialState, action) {
             state.posts.items = []
+        },
+        searchReducer(state: typeof initialState, action) {
+            state.search = action.payload
         }
     },
     extraReducers: {
@@ -130,5 +135,5 @@ const postSlice = createSlice({
 
     }
 })
-export const {search} = postSlice.actions
+export const {categoryReducer, searchReducer} = postSlice.actions
 export const postReducer = postSlice.reducer

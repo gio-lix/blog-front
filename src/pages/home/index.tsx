@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from '
 import s from "./Home.module.scss"
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
 import Post from "../../components/post";
-import {fetchAllPosts, fetchTags, search} from "../../redux/slices/posts";
+import {fetchAllPosts, fetchTags, categoryReducer} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
 import { DataState} from "../../types/type";
@@ -12,6 +12,7 @@ import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
 import {TagsBlock} from "../../components/tagBlogs";
 import {fetchPostsComments} from "../../redux/slices/comments";
+import Search from "../../components/search";
 
 
 
@@ -20,6 +21,7 @@ const HomePage = () => {
     const dispatch = useAppDispatch()
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
     const userData = useAppSelector((state: RootState) => state.auth.data)
+    const [search, setSearch] = useState("")
     const [nav, setNav] = useState(0)
     const [openComments, setOpenComments] = useState<boolean>(false)
     const [openTags, setOpenTags] = useState<boolean>(false)
@@ -28,24 +30,21 @@ const HomePage = () => {
     const [tag, setTag] = useState<string>("")
     const scrollRef = useRef<any | null>(null)
     const {allComments} = useAppSelector((state: RootState) => state.comments)
-    const [searchParams, setSearchParams] = useState("")
-
+    const [categoryParams, setCategoryParams] = useState("")
 
     const isPostLoading = posts.status === "loading"
     const isTagLoading = tags.status === "loading"
 
 
-
     useLayoutEffect(() => {
-        dispatch(fetchAllPosts({page, searchParams, tag}))
-
-    }, [page, searchParams, tag])
+        dispatch(fetchAllPosts({page, categoryParams, tag, search}))
+    }, [page, categoryParams, tag, search])
 
     const handleEndConcert = () => {
         setNav(0)
         setTag("")
-        setSearchParams("")
-        dispatch(search("clear"))
+        setCategoryParams("")
+        dispatch(categoryReducer("clear"))
     }
 
     useEffect(() => {
@@ -53,7 +52,6 @@ const HomePage = () => {
         return () => {
             window.removeEventListener('beforeunload', handleEndConcert);
             handleEndConcert()
-
         }
     }, []);
 
@@ -74,26 +72,25 @@ const HomePage = () => {
             setPage((prev: number): number =>  prev + 1)
             return
         }
-
     }
-
-
 
 
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
             setTag("")
-            if (searchParams === "") return
-            setSearchParams("")
-            dispatch(search("clear"))
+            setSearch("")
+            if (categoryParams === "") return
+            setCategoryParams("")
+            dispatch(categoryReducer("clear"))
             setPage(0)
         } else {
             setNav(1)
             setTag("")
-            if (searchParams) return
-            setSearchParams("popular")
-            dispatch(search("clear"))
+            setSearch("")
+            if (categoryParams) return
+            setCategoryParams("popular")
+            dispatch(categoryReducer("clear"))
             setPage(0)
         }
     }, [posts.items])
@@ -130,11 +127,6 @@ const HomePage = () => {
     }, [scrollRef, options])
 
 
-
-
-
-
-
     return (
         <main className={clsx("container", s.bottom)}>
             {/*  navigation  */}
@@ -145,7 +137,17 @@ const HomePage = () => {
                 <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
                     popular
                 </p>
+                <Search
+                    setSearch={setSearch}
+                    search={search}
+                    setTag={setTag}
+                    setSearchParams={setCategoryParams}
+                    setPage={setPage}
+                    setNav={setNav}
+                    tag={tag}
+                />
             </div>
+
 
             <section className={s.home_grid}>
                 <div ref={scrollRef} className={s.cart}>
@@ -176,10 +178,11 @@ const HomePage = () => {
                             <p onClick={() => setOpenTags(!openTags)}>Tags</p>
                             {openTags ? (
                                 <TagsBlock
+                                    setSearch={setSearch}
                                     setTag={setTag}
                                     items={tags.items}
                                     isLoading={isTagLoading}
-                                    setSearchParams={setSearchParams}
+                                    setSearchParams={setCategoryParams}
                                     setPage={setPage}
                                     setNav={setNav}
                                     tag={tag}

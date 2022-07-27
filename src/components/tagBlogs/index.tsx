@@ -5,7 +5,7 @@ import s from './TagBlogs.module.scss'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {useAppDispatch} from "../../redux/store";
-import {search} from "../../redux/slices/posts";
+import {categoryReducer} from "../../redux/slices/posts";
 
 interface TagBlogsProps {
     items: string[]
@@ -14,20 +14,22 @@ interface TagBlogsProps {
     setSearchParams: Function
     setPage: Function
     setNav: Function
+    setSearch: Function
     tag: any
 }
 
-export const TagsBlock = ({ items, isLoading = true,setTag, setSearchParams,setNav, setPage,tag }: TagBlogsProps) => {
+export const TagsBlock = ({ items, isLoading = true,setTag, setSearchParams,setNav, setPage,tag, setSearch }: TagBlogsProps) => {
     const dispatch = useAppDispatch()
     const tagsFunc = (name: string) => {
         if (tag === name) {
             return
         }
-        dispatch(search("clear"))
+        dispatch(categoryReducer("clear"))
         window.scrollTo(0, 0);
         setPage(0)
         setNav(0)
         setSearchParams("")
+        setSearch("")
         setTag(name)
     }
 
