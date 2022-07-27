@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import clsx from "clsx";
 import {Link, useLocation, useNavigate } from "react-router-dom"
 import s from "./Post.module.scss"
@@ -14,7 +14,6 @@ import {UserInfo} from "../userInfo";
 
 
 interface Props {
-    children?: React.ReactNode
     post: DataState
     isLoading?: boolean
     isFullPost?: any
@@ -22,7 +21,7 @@ interface Props {
 
 }
 
-const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
+const Post = ({post, isLoading, isFullPost, isEditable}: Props) => {
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -37,9 +36,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
         dispatch(fetchRemovePosts(_id))
     };
 
-    console.log("user - ", user)
 
-    let createdAt;
     return (
         <div className={clsx(s.root, {[s.rootFull]: isFullPost})}>
             {isEditable ? (
@@ -56,7 +53,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
                 <div className={s.userInfo}>
                     <FaUserCircle className={s.userImage}/>
                     <span>
-                        <UserInfo {...user} additionalText={createdAt}/>
+                        <UserInfo {...user} additionalText={post.createdAt}/>
                     </span>
                 </div>
                 <figure>

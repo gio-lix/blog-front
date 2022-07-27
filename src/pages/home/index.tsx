@@ -1,34 +1,39 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
-import s from "./Home.module.scss"
 import {RootState, useAppDispatch, useAppSelector} from "../../redux/store";
-import Post from "../../components/post";
 import {fetchAllPosts, fetchTags, categoryReducer} from "../../redux/slices/posts";
-import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
-import {DataState} from "../../types/type";
+import {fetchPostsComments} from "../../redux/slices/comments";
 import CommentsBlock from "../../components/commentsBlog";
+import {TagsBlock} from "../../components/tagBlogs";
+import 'react-loading-skeleton/dist/skeleton.css'
+import Search from "../../components/search";
+import {DataState} from "../../types/type";
+import Post from "../../components/post";
 import clsx from "clsx";
+import s from "./Home.module.scss"
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
-import {TagsBlock} from "../../components/tagBlogs";
-import {fetchPostsComments} from "../../redux/slices/comments";
-import Search from "../../components/search";
 
 
 const HomePage = () => {
     const dispatch = useAppDispatch()
+
+    const {allComments} = useAppSelector((state: RootState) => state.comments)
     const {posts, tags} = useAppSelector((state: RootState) => state.posts)
     const userData = useAppSelector((state: RootState) => state.auth.data)
-    const [search, setSearch] = useState("")
-    const [nav, setNav] = useState(0)
+
     const [openComments, setOpenComments] = useState<boolean>(false)
     const [openTags, setOpenTags] = useState<boolean>(false)
-    const [postId, setPostId] = useState<string>()
-    const [page, setPage] = useState(0)
+
+    const [categoryParams, setCategoryParams] = useState<string>("")
+    const [postId, setPostId] = useState<string>("")
+    const [search, setSearch] = useState<string>("")
     const [tag, setTag] = useState<string>("")
+
+    const [nav, setNav] = useState<number>(0)
+    const [page, setPage] = useState<number>(0)
+
     const scrollRef = useRef<any | null>(null)
-    const {allComments} = useAppSelector((state: RootState) => state.comments)
-    const [categoryParams, setCategoryParams] = useState("")
 
     const isPostLoading = posts.status === "loading"
     const isTagLoading = tags.status === "loading"
@@ -78,6 +83,7 @@ const HomePage = () => {
     }
 
 
+    // navigation
     const navigation = useCallback((num: number) => {
         if (num === 0) {
             setNav(0)
@@ -151,6 +157,7 @@ const HomePage = () => {
                 />
             </section>
 
+
             <section className={s.home_grid}>
                 <div ref={scrollRef} className={s.cart}>
                     {posts.items?.map((post: DataState, index: number) => {
@@ -172,8 +179,9 @@ const HomePage = () => {
                             }
                         </div>
                     ) : null}
-
                 </div>
+
+                {/* sidebar  */}
                 <div className={s.info}>
                     <aside className={s.tagsClass}>
                         <div className={clsx(openTags ? s.tagsToggleOpen : s.tagsToggleClose)}>
