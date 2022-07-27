@@ -193,3 +193,11 @@
   cursor: pointer;
   color: black;
 }
+
+.inherit {
+  all: initial;
+  * {
+    all: revert;
+  }
+
+}

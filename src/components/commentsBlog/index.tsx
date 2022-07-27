@@ -21,6 +21,8 @@ const CommentsBlock = ({ item, children, isLoading = true }: Props) => {
 
     const path = pathname === `/posts/${id}`
 
+    console.log("item", item)
+
 
     return (
         <SideBlock  >

@@ -1,5 +1,6 @@
 @import "src/styles/variables";
 @import "src/styles/mixin";
+@import "src/styles/breakpoints";
 
 
 .bottom {
@@ -7,40 +8,41 @@
 }
 
 .home {
+  background-color: red;
+
   &_article {
+    position: relative;
     display: flex;
     margin-bottom: 30px;
 
-    > p {
-      cursor: pointer;
-      width: 90px;
-      position: relative;
-      text-align: center;
+      > p {
+        cursor: pointer;
+        width: 90px;
+        position: relative;
+        text-align: center;
 
+        &.choice {
+          &::before {
+            position: absolute;
+            opacity: 1;
+            width: 100% ;
+          }
+        }
 
-      &.choice {
         &::before {
-          position: absolute;
-          opacity: 1;
-          width: 100% ;
+          content: "";
+          left: 0;
+          bottom: -20px;
+
+          height: 4px;
+          background-color: $limeGreen;
+          opacity: 0;
+          @include transition(opacity);
         }
       }
-
-      &::before {
-        content: "";
-        left: 0;
-        bottom: -20px;
-
-        height: 4px;
-        background-color: $limeGreen;
-        opacity: 0;
-        @include transition(opacity);
+      > p:first-child {
+        margin-right: 3px;
       }
-    }
-
-    > p:first-child {
-      margin-right: 3px;
-    }
   }
 
   &_grid {
@@ -58,11 +60,14 @@
       padding: 0 20px;
       margin-left: auto;
       height: auto;
+
+
     }
     .navLink {
       text-decoration: none;
       color: inherit;
     }
+
   }
 }
 

@@ -5,7 +5,7 @@ import Post from "../../components/post";
 import {fetchAllPosts, fetchTags, categoryReducer} from "../../redux/slices/posts";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PostSkeleton} from "../../components/post/PostSkeleton";
-import { DataState} from "../../types/type";
+import {DataState} from "../../types/type";
 import CommentsBlock from "../../components/commentsBlog";
 import clsx from "clsx";
 import {motion} from 'framer-motion';
@@ -13,8 +13,6 @@ import {stagger} from "../../animation";
 import {TagsBlock} from "../../components/tagBlogs";
 import {fetchPostsComments} from "../../redux/slices/comments";
 import Search from "../../components/search";
-
-
 
 
 const HomePage = () => {
@@ -42,6 +40,7 @@ const HomePage = () => {
 
     const handleEndConcert = () => {
         setNav(0)
+        setPage(0)
         setTag("")
         setCategoryParams("")
         dispatch(categoryReducer("clear"))
@@ -60,16 +59,20 @@ const HomePage = () => {
         dispatch(fetchTags())
     }, [dispatch])
 
-
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
         return () => window.addEventListener('scroll', handleScroll)
     }, []);
+
     const handleScroll = () => {
         const scrollHeight = Math.ceil(window.scrollY + window.innerHeight)
         const windowHeight = Math.floor(document.documentElement.scrollHeight)
-        if (scrollHeight === windowHeight) {
-            setPage((prev: number): number =>  prev + 1)
+        if (scrollHeight === windowHeight || (scrollHeight - 1) === windowHeight || (scrollHeight + 1) === windowHeight) {
+            setPage((prev: number): any => {
+                console.log("prev", prev)
+                console.log("page", page)
+                return prev + 1
+            })
             return
         }
     }
@@ -130,7 +133,7 @@ const HomePage = () => {
     return (
         <main className={clsx("container", s.bottom)}>
             {/*  navigation  */}
-            <div className={s.home_article}>
+            <section className={s.home_article}>
                 <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
                     new
                 </p>
@@ -146,8 +149,7 @@ const HomePage = () => {
                     setNav={setNav}
                     tag={tag}
                 />
-            </div>
-
+            </section>
 
             <section className={s.home_grid}>
                 <div ref={scrollRef} className={s.cart}>
@@ -158,7 +160,7 @@ const HomePage = () => {
                                     post={post}
                                     isLoading={false}
                                     isFullPost={false}
-                                    isEditable={(post as any)?.user === userData?._id}
+                                    isEditable={post.user._id === userData?._id}
                                 />
                             </div>
                         )

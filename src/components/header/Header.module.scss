@@ -1,11 +1,11 @@
 @import "src/styles/variables";
 @import "src/styles/mixin";
+@import "src/styles/breakpoints";
 
 .header {
   padding: 20px 10px;
   margin-bottom: 20px;
 }
-
 
 .logo {
   background-color: black;

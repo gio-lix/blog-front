@@ -26,7 +26,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {viewsCount, _id, tags,  user} = post
+    const {viewsCount, _id, tags, user} = post
 
     const path = location.pathname === "/"
 
@@ -36,6 +36,8 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
     const onClickRemove = () => {
         dispatch(fetchRemovePosts(_id))
     };
+
+    console.log("user - ", user)
 
     let createdAt;
     return (
@@ -73,7 +75,7 @@ const Post = ({post, isLoading, isFullPost, children, isEditable}: Props) => {
                 </figure>
 
                 <div>
-                    <p>{post.text.substring(0,200)}</p>
+                    <p >{path ? post.text.substring(0,200) +  "..." : post.text}</p>
                 </div>
                 <div>
                     <ul className={s.tags}>
