@@ -13,6 +13,7 @@ import clsx from "clsx";
 import s from "./Home.module.scss"
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
+import {GiSettingsKnobs} from "react-icons/gi"
 
 
 const HomePage = () => {
@@ -24,6 +25,7 @@ const HomePage = () => {
 
     const [openComments, setOpenComments] = useState<boolean>(false)
     const [openTags, setOpenTags] = useState<boolean>(false)
+    const [openResponsiveCarts, setOpenResponsiveCarts] = useState<boolean>(false)
 
     const [categoryParams, setCategoryParams] = useState<string>("")
     const [postId, setPostId] = useState<string>("")
@@ -135,17 +137,31 @@ const HomePage = () => {
         })
     }, [scrollRef, options])
 
+    console.log("openResponsiveComments - ", openResponsiveCarts)
 
     return (
-        <main className={clsx("container", s.bottom)}>
+        <main className={clsx("container", s.root)}>
+
+            {openResponsiveCarts ? (
+                <div>
+                    lorem
+                </div>
+            ) : null}
+
+
             {/*  navigation  */}
             <section className={s.home_article}>
-                <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
-                    new
-                </p>
-                <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
-                    popular
-                </p>
+                <div>
+                    <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
+                        new
+                    </p>
+                    <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
+                        popular
+                    </p>
+                    <button onClick={() => setOpenResponsiveCarts(!openResponsiveCarts)} className={s.additional}>
+                        <GiSettingsKnobs />
+                    </button>
+                </div>
                 <Search
                     setSearch={setSearch}
                     search={search}

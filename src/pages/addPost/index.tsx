@@ -17,6 +17,7 @@ interface FetchProps {
     imageUrl: string
     tags: string
 }
+
 const AddPost = () => {
     const {id} = useParams()
     const navigate = useNavigate()
@@ -75,7 +76,7 @@ const AddPost = () => {
     useEffect(() => {
         if (isEditing) {
             axios.get(`/posts/${id}`)
-                .then(({data}:AxiosResponse<FetchProps>) => {
+                .then(({data}: AxiosResponse<FetchProps>) => {
                     setTitle(data.title)
                     setText(data.text)
                     setTags(data.tags)
@@ -83,11 +84,10 @@ const AddPost = () => {
                 })
                 .catch((err) => console.log(err))
         }
-    },[isEditing, id])
+    }, [isEditing, id])
 
 
-
-   const handleSubmit = async () => {
+    const handleSubmit = async () => {
         try {
             const allTags = [tags]
             const fields = {
@@ -106,7 +106,7 @@ const AddPost = () => {
         } finally {
             setIsLoading(false)
         }
-   }
+    }
 
 
     if (!window.localStorage.getItem("token") && !isAuth) {
@@ -114,7 +114,7 @@ const AddPost = () => {
     }
     return (
         <section className={clsx(s.root, "container")}>
-            <label htmlFor="file" >
+            <label htmlFor="file">
                 upload file
             </label>
 
@@ -164,7 +164,7 @@ const AddPost = () => {
                 options={options}
             />
 
-            <div  className={s.buttonBox}>
+            <div className={s.buttonBox}>
                 <Button onClick={handleSubmit} className={s.button}>
                     {isEditing ? "save" : "Submit"}
                 </Button>
