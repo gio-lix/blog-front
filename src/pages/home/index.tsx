@@ -14,6 +14,7 @@ import s from "./Home.module.scss"
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
 import {GiSettingsKnobs} from "react-icons/gi"
+import Responsive from "../../components/responsive";
 
 
 const HomePage = () => {
@@ -137,18 +138,9 @@ const HomePage = () => {
         })
     }, [scrollRef, options])
 
-    console.log("openResponsiveComments - ", openResponsiveCarts)
 
     return (
         <main className={clsx("container", s.root)}>
-
-            {openResponsiveCarts ? (
-                <div>
-                    lorem
-                </div>
-            ) : null}
-
-
             {/*  navigation  */}
             <section className={s.home_article}>
                 <div>
@@ -162,6 +154,22 @@ const HomePage = () => {
                         <GiSettingsKnobs />
                     </button>
                 </div>
+                {openResponsiveCarts ? (
+                    <div className={s.responsiveCart}>
+                        <Responsive
+                            setOpenResponsiveCarts={setOpenResponsiveCarts}
+                            setSearch={setSearch}
+                            setTag={setTag}
+                            items={tags.items}
+                            isLoading={isTagLoading}
+                            setSearchParams={setCategoryParams}
+                            setPage={setPage}
+                            setNav={setNav}
+                            tag={tag}
+                            commentsItem={allComments}
+                        />
+                    </div>
+                ) : null}
                 <Search
                     setSearch={setSearch}
                     search={search}
@@ -169,7 +177,6 @@ const HomePage = () => {
                     setSearchParams={setCategoryParams}
                     setPage={setPage}
                     setNav={setNav}
-                    tag={tag}
                 />
             </section>
 

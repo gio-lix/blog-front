@@ -8,19 +8,29 @@
   margin-bottom: 100px;
 
 
-
 }
 
 .home {
-  background-color: red;
-
   &_article {
     position: relative;
     display: flex;
     margin-bottom: 30px;
 
+  .responsiveCart {
+    position: absolute;
+    top: 0;
+    z-index: 20;
+    width: 100%;
+    min-height: 100px;
+    background: white;
+  }
 
     @include breakpoint-down(small) {
+      position: sticky;
+      top: 27px;
+      z-index: 40;
+      border-bottom: 2px solid gray;
+      background: white;
       margin-bottom: 5px;
       margin-top: 27px;
     }
@@ -28,6 +38,7 @@
     > div:first-child {
       position: relative;
       display: flex;
+
 
 
       .additional {
@@ -72,6 +83,7 @@
           background-color: $limeGreen;
           opacity: 0;
           @include transition(opacity);
+
         }
       }
 

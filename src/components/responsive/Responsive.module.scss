@@ -1,0 +1,64 @@
+.root {
+  position: relative;
+  border: 1px solid black;
+  min-height: 110px;
+
+  > button {
+    position: absolute;
+    z-index: 30;
+    top: 3px;
+    right: 3px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  > div:nth-child(2) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+
+    .tagBox {
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    > p {
+      margin-top: 12px;
+      cursor: pointer;
+    }
+  }
+
+  > div:nth-child(3) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+
+    .commentBox {
+      background-color: #faedcd !important;
+      height: 300px;
+      width: 100%;
+
+      overflow: auto;
+      max-height: 340px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    > p {
+      margin-top: 12px;
+      cursor: pointer;
+    }
+  }
+
+}
