@@ -1,5 +1,6 @@
 @import "src/styles/variables";
 @import "src/styles/mixin";
+@import "src/styles/breakpoints";
 
 .root {
   > label {
@@ -68,6 +69,11 @@
   }
 
   .buttonBox {
+    @include breakpoint-down(small) {
+      display: flex;
+      justify-content: center;
+    }
+
     margin: 20px 0 70px 0;
 
     .button {
@@ -83,6 +89,8 @@
       &:hover {
         opacity: 1;
       }
+
+
     }
 
     .closeButton {
@@ -108,6 +116,12 @@
         opacity: 1;
       }
     }
+  }
+  @include breakpoint-up(medium) {
+    padding: 0 10px;
+  }
+  @include breakpoint-down(small) {
+    padding: 0 15px;
   }
 }
 

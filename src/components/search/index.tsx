@@ -11,7 +11,6 @@ interface SearchProps {
     setPage: Function
     setNav: Function
     setSearch: Function
-    tag: any
 }
 const Search = ({setSearchParams,setNav,setPage,setTag,setSearch,search}: SearchProps) => {
     const dispatch = useAppDispatch()

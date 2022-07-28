@@ -13,6 +13,8 @@ import clsx from "clsx";
 import s from "./Home.module.scss"
 import {motion} from 'framer-motion';
 import {stagger} from "../../animation";
+import {GiSettingsKnobs} from "react-icons/gi"
+import Responsive from "../../components/responsive";
 
 
 const HomePage = () => {
@@ -24,6 +26,7 @@ const HomePage = () => {
 
     const [openComments, setOpenComments] = useState<boolean>(false)
     const [openTags, setOpenTags] = useState<boolean>(false)
+    const [openResponsiveCarts, setOpenResponsiveCarts] = useState<boolean>(false)
 
     const [categoryParams, setCategoryParams] = useState<string>("")
     const [postId, setPostId] = useState<string>("")
@@ -137,15 +140,36 @@ const HomePage = () => {
 
 
     return (
-        <main className={clsx("container", s.bottom)}>
+        <main className={clsx("container", s.root)}>
             {/*  navigation  */}
             <section className={s.home_article}>
-                <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
-                    new
-                </p>
-                <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
-                    popular
-                </p>
+                <div>
+                    <p onClick={() => navigation(0)} className={clsx(nav === 0 ? s.choice : "")}>
+                        new
+                    </p>
+                    <p onClick={() => navigation(1)} className={clsx(nav === 1 ? s.choice : "")}>
+                        popular
+                    </p>
+                    <button onClick={() => setOpenResponsiveCarts(!openResponsiveCarts)} className={s.additional}>
+                        <GiSettingsKnobs />
+                    </button>
+                </div>
+                {openResponsiveCarts ? (
+                    <div className={s.responsiveCart}>
+                        <Responsive
+                            setOpenResponsiveCarts={setOpenResponsiveCarts}
+                            setSearch={setSearch}
+                            setTag={setTag}
+                            items={tags.items}
+                            isLoading={isTagLoading}
+                            setSearchParams={setCategoryParams}
+                            setPage={setPage}
+                            setNav={setNav}
+                            tag={tag}
+                            commentsItem={allComments}
+                        />
+                    </div>
+                ) : null}
                 <Search
                     setSearch={setSearch}
                     search={search}
@@ -153,7 +177,6 @@ const HomePage = () => {
                     setSearchParams={setCategoryParams}
                     setPage={setPage}
                     setNav={setNav}
-                    tag={tag}
                 />
             </section>
 
