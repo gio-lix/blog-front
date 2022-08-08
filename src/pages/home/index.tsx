@@ -42,7 +42,7 @@ const HomePage = () => {
     const isTagLoading = tags.status === "loading"
 
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         dispatch(fetchAllPosts({page, categoryParams, tag, search}))
     }, [page, categoryParams, tag, search])
 
